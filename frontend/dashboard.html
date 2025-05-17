@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Recipe Finder</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      display: flex;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff8f0;
+    }
+
+    .container {
+      display: flex;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 200px;
+      background: #ffecd2;
+      height: 100vh;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+
+    .sidebar h2 {
+      margin-bottom: 20px;
+    }
+
+    .sidebar a {
+      display: block;
+      padding: 10px 0;
+      text-decoration: none;
+      color: #333;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    .search-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .search-bar-container h2 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    #searchInput {
+      padding: 8px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    #searchButton {
+      background-color: orange;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .recipe-card {
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 250px;
+    }
+
+    .recipe-card img {
+      width: 100%;
+      border-radius: 10px;
+      max-height: 200px;
+      object-fit: cover;
+    }
+
+    .recipe-card h3 {
+      margin: 10px 0 5px;
+    }
+
+    .recipe-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .no-results {
+      font-size: 1.2em;
+      color: #777;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .button-group button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .button-group button:first-child {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .button-group button:last-child {
+      background-color: #ff4d4d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h2>Dashboard</h2>
+      <a href="/dashboard.html">Home</a>
+      <a href="/saved.html">Saved Recipes</a>
+      <a href="/profile.html">My Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+
+    <div class="main-content">
+      <div class="search-bar-container">
+        <h2>Explore Recipes</h2>
+        <input type="text" id="searchInput" placeholder="Search recipes..." />
+        <button id="searchButton">Search</button>
+      </div>
+
+      <div id="recipeList" class="recipe-list"></div>
+    </div>
+  </div>
+
+  <script>
+    // Get username from localStorage
+    const username = localStorage.getItem('username');
+    
+    async function fetchRecipes(search = '') {
+      try {
+        const res = await fetch(`http://localhost:5000/recipes?search=${encodeURIComponent(search)}`);
+        const data = await res.json();
+
+        const recipeList = document.getElementById('recipeList');
+        recipeList.innerHTML = '';
+
+      if (data.length === 0) {
+        recipeList.innerHTML = '<p class="no-results">Recipe not found.</p>';
+        return;
+      }
+
+    // Get username from localStorage
+      const username = localStorage.getItem('username');
+    
+    // If user is logged in, fetch their saved recipes
+      let savedRecipeIds = [];
+      if (username) {
+        try {
+          const savedRes = await fetch(`http://localhost:5000/user/saved-recipes?username=${username}`);
+          const savedRecipes = await savedRes.json();
+          savedRecipeIds = savedRecipes.map(recipe => recipe._id);
+        } catch (err) {
+          console.error('Error fetching saved recipes:', err);
+        }
+      }
+
+      data.forEach(recipe => {
+        const isSaved = savedRecipeIds.includes(recipe._id);
+        const card = document.createElement('div');
+        card.className = 'recipe-card';
+        card.innerHTML = `
+          <img src="${recipe.image}" alt="${recipe.title}">
+          <h3>${recipe.title}</h3>
+          <div class="button-group">
+            <button onclick="viewRecipe('${recipe._id}')">View</button>
+            <button onclick="toggleSave('${recipe._id}', this)">
+              ${isSaved ? 'Unsave' : 'Save'}
+            </button>
+          </div>
+          `;
+        recipeList.appendChild(card);
+      });
+    } catch (err) {
+      console.error('Error fetching recipes:', err);
+    }
+  }
+
+    function viewRecipe(id) {
+      window.location.href = `recipe.html?id=${id}`;
+    }
+
+    async function toggleSave(recipeId, button) {
+      if (!username) {
+        alert('Please log in to save recipes');
+        return;
+      }
+
+      try {
+        const res = await fetch(`http://localhost:5000/recipes/${recipeId}/toggle-save`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username })
+        });
+        
+        const data = await res.json();
+        
+        // Check if the recipe is now saved or unsaved
+        const isSaved = data.savedRecipes && data.savedRecipes.includes(recipeId);
+        
+        // Update button text
+        button.textContent = isSaved ? 'Unsave' : 'Save';
+        
+        // Optional: Show a message to the user
+        console.log(data.message);
+      } catch (err) {
+        console.error('Error toggling save:', err);
+        alert('Error saving/unsaving recipe. Please try again.');
+      }
+    }
+
+    document.getElementById('searchButton').addEventListener('click', () => {
+      const query = document.getElementById('searchInput').value.trim();
+      fetchRecipes(query);
+    });
+
+    // Also allow search on Enter key
+    document.getElementById('searchInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        const query = document.getElementById('searchInput').value.trim();
+        fetchRecipes(query);
+      }
+    });
+
+    window.onload = () => {
+      fetchRecipes();
+    };
+  </script>
+</body>
+</html>
+
+
+

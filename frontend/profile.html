@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile - Recipe Finder</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body { display: flex; margin: 0; font-family: Arial; background: #fff8f0; }
+    .container { display: flex; width: 100%; }
+    .sidebar { width: 200px; background: #ffecd2; height: 100vh; padding: 20px; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+    .sidebar h2 { margin-bottom: 20px; }
+    .sidebar a { display: block; padding: 10px 0; text-decoration: none; color: #333; }
+    .sidebar .profile-info { margin-top: 20px; }
+    .main-content { flex: 1; padding: 20px; }
+    .profile-card { background: #fff; padding: 20px; border-radius: 10px; max-width: 500px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .profile-card h2 { margin-bottom: 10px; }
+    .profile-card p { margin: 5px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sidebar">
+      <h2>Dashboard</h2>
+      <a href="/dashboard.html">Home</a>
+      <a href="/saved.html">Saved Recipes</a>
+    <a href="/profile.html">View Profile</a>
+      <a href="/logout">Logout</a>
+    </div>
+
+    <div class="main-content">
+      <div id="profileContainer">
+        <h2>My Profile</h2>
+        <p><strong>Username:</strong> <span id="profileUsername"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const username = localStorage.getItem('username');
+    document.getElementById('profileUsername').innerText = username;
+  </script>  
+
+  <script>
+    function logout() {
+      window.location.href = '/logout';
+    }
+  </script>
+</body>
+</html>

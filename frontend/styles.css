@@ -1,0 +1,102 @@
+/* Landing page specific style */
+body.landing-page {
+  background-image: url('https://www.shutterstock.com/image-photo/culinary-background-kitchen-utensils-various-260nw-1531848278.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+/* Container styling */
+.container {
+  width: 100%;
+  min-height: 100vh;
+}
+/* Main content area */
+.main-content {
+  padding: 20px;
+}
+/* Top bar with auth buttons */
+.top-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+}
+.auth-buttons button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  color: white;
+  padding: 8px 15px;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+.auth-buttons button:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+/* Banner section */
+.banner {
+  text-align: center;
+  padding: 50px 20px;
+  margin-top: 40px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.banner h1 {
+  font-size: 2.5em;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.banner p {
+  font-size: 1.2em;
+  line-height: 1.6;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+/* Auth forms */
+.auth-form {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 25px;
+  border-radius: 10px;
+  width: 300px;
+  margin: 20px auto;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+.auth-form h2 {
+  color: white;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.auth-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+.auth-form button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff8c00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.auth-form button:hover {
+  background-color: #ff7200;
+}
+.hidden {
+  display: none;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recipe Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="landing-page">
+  <div class="container">
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top bar with login/signup -->
+      <header class="top-bar">
+        <div class="auth-buttons">
+          <button id="loginBtn">Login</button>
+          <button id="signupBtn">Sign Up</button>
+        </div>
+      </header>
+      <!-- Banner -->
+      <section class="banner">
+        <h1>Welcome to Recipe Finder!!</h1>
+        <p>From kid-friendly meals to decadent desserts to better-for-you options, you'll find a recipe for every occasion.</p>
+      </section>
+      <!-- Login Form -->
+      <div class="auth-form hidden" id="loginForm">
+        <h2>Login</h2>
+        <input type="text" placeholder="Username" id="loginUsername">
+        <input type="password" placeholder="Password" id="loginPassword">
+        <button id="loginSubmit">Login</button>
+      </div>
+      <!-- Signup Form -->
+      <div class="auth-form hidden" id="signupForm">
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Username" id="signupUsername">
+        <input type="password" placeholder="Password" id="signupPassword">
+        <button id="signupSubmit">Sign Up</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
